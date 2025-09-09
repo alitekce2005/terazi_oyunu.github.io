@@ -1,377 +1,430 @@
 * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+.game-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
-        .game-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+/* Üst Kısım: Masa */
+.table-area {
+    width: 100%;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+.game-table {
+    width: min(350px, 90vw);
+    height: min(350px, 90vw);
+    background: radial-gradient(circle, #8B4513 0%, #654321 100%);
+    border-radius: 50%;
+    position: relative;
+    border: 8px solid #4a2c17;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
 
-        .header h1 {
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
+.table-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    min-width: 180px;
+}
 
-        .game-area {
-            display: flex;
-            flex: 1;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
+.round-info {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
 
-        .table-area {
-            flex: 2;
-            min-width: 300px;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+.target-info {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 8px;
+}
 
-        .game-table {
-            width: min(400px, 80vw);
-            height: min(400px, 80vw);
-            background: radial-gradient(circle, #8B4513 0%, #654321 100%);
-            border-radius: 50%;
-            position: relative;
-            border: 8px solid #4a2c17;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
+.guess-input-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    gap: 8px;
+}
 
-        .table-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            min-width: 200px;
-        }
+.table-guess-input {
+    width: 80px;
+    padding: 8px;
+    text-align: center;
+    border: 2px solid #9c27b0;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: white;
+}
 
-        .round-info {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
+.table-guess-input.invalid {
+    border-color: #f44336;
+}
 
-        .target-info {
-            font-size: 1rem;
-            color: #666;
-        }
+.table-submit-btn {
+    background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
-        .player {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-            color: white;
-            font-size: 0.8rem;
-            font-weight: bold;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 3px solid rgba(255,255,255,0.3);
-        }
+.table-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(156, 39, 176, 0.4);
+}
 
-        .player.human {
-            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
-        }
+.table-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
 
-        .player.bot {
-            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
-        }
+/* Orta Kısım: Oyun Alanı */
+.game-area {
+    display: flex;
+    flex: 1;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 20px 0;
+}
 
-        .player.eliminated {
-            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
-            opacity: 0.6;
-            transform: scale(0.8);
-        }
+.control-panel {
+    flex: 1;
+    min-width: 300px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
 
-        .player.eliminated::after {
-            content: '✗';
-            position: absolute;
-            font-size: 2rem;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
+.game-log {
+    background: #f5f5f5;
+    border-radius: 15px;
+    padding: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 2px solid #ddd;
+}
 
-        .player.winner {
-            animation: winner-pulse 1s infinite;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
-        }
+.log-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
 
-        @keyframes winner-pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
+.log-item {
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
 
-        .player-name {
-            font-size: 0.7rem;
-            margin-bottom: 2px;
-        }
+.log-round {
+    background: #e3f2fd;
+    color: #1976d2;
+}
 
-        .player-health {
-            font-size: 0.6rem;
-            opacity: 0.9;
-        }
+.log-result {
+    background: #e8f5e8;
+    color: #2e7d32;
+}
 
-        .player-guess {
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+.log-elimination {
+    background: #ffebee;
+    color: #c62828;
+}
 
-        .player-guess.show {
-            opacity: 1;
-        }
+/* Header */
+.header {
+    text-align: center;
+    color: white;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
-        .control-panel {
-            flex: 1;
-            min-width: 300px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-        }
+.header h1 {
+    font-size: clamp(1.2rem, 4vw, 2rem);
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
 
-        .rules-box {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-left: 4px solid #2196F3;
-        }
+/* Oyuncu Stilleri */
+.player {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
 
-        .rules-title {
-            font-weight: bold;
-            color: #1976D2;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
+.player.human {
+    background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+}
 
-        .rule-item {
-            margin: 5px 0;
-            font-size: 0.9rem;
-            color: #424242;
-        }
+#player-1.bot { background: linear-gradient(135deg, #FF5722 0%, #E64A19 100%); } /* Turuncu */
+#player-2.bot { background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%); } /* Yeşil */
+#player-3.bot { background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%); } /* Mor */
+#player-4.bot { background: linear-gradient(135deg, #FFC107 0%, #FFA000 100%); } /* Altın */
 
-        .input-section {
-            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+.player.eliminated {
+    opacity: 0.6;
+    transform: scale(0.8);
+}
 
-        .input-label {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #7b1fa2;
-            margin-bottom: 15px;
-        }
+.player.eliminated::after {
+    content: '✗';
+    position: absolute;
+    font-size: 2rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
 
-        .guess-input {
-            width: 100%;
-            max-width: 200px;
-            padding: 15px;
-            font-size: 1.2rem;
-            border: 3px solid #9c27b0;
-            border-radius: 10px;
-            text-align: center;
-            background: white;
-            margin-bottom: 15px;
-        }
+.player.winner {
+    animation: winner-pulse 1s infinite;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+}
 
-        .submit-btn {
-            background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.3);
-        }
+@keyframes winner-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(156, 39, 176, 0.4);
-        }
+.player-name {
+    font-size: 0.7rem;
+    margin-bottom: 2px;
+}
 
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
+.player-health {
+    font-size: 0.6rem;
+    opacity: 0.9;
+}
 
-        .game-log {
-            background: #f5f5f5;
-            border-radius: 15px;
-            padding: 15px;
-            max-height: 200px;
-            overflow-y: auto;
-            border: 2px solid #ddd;
-        }
+.player-guess {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
-        .log-title {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
+.player-guess.show {
+    opacity: 1;
+}
 
-        .log-item {
-            margin: 5px 0;
-            padding: 5px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-        }
+/* Kurallar Kutusu */
+.rules-box {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 300px;
+    max-height: calc(100vh - 120px);
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    overflow-y: auto;
+}
 
-        .log-round {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
+.rules-title {
+    font-weight: bold;
+    color: #1976D2;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    text-align: center;
+}
 
-        .log-result {
-            background: #e8f5e8;
-            color: #2e7d32;
-        }
+.rule-item {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    padding: 8px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
 
-        .log-elimination {
-            background: #ffebee;
-            color: #c62828;
-        }
+.rule-item.active {
+    color: #1976D2;
+    background-color: #e3f2fd;
+    border-left: 4px solid #2196F3;
+}
 
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
+.rule-item.inactive {
+    color: #9E9E9E;
+    background-color: #F5F5F5;
+    border-left: 4px solid #BDBDBD;
+}
 
-        .menu-content {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
+/* Kurallar Butonu */
+.rules-toggle-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+}
 
-        .menu-button {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+.rules-toggle-btn:hover {
+    background: rgba(255, 255, 255, 1);
+}
 
-        .menu-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-        }
+/* Cihazı Döndür Mesajı */
+#cihazi-dondur-mesaji {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 9999;
+    font-size: 1.8em;
+    padding: 20px;
+    box-sizing: border-box;
+}
 
-        /* Player positions around the table */
-        .player:nth-child(1) { top: -40px; left: 50%; transform: translateX(-50%); }
-        .player:nth-child(2) { top: 20%; right: -40px; }
-        .player:nth-child(3) { bottom: 20%; right: -40px; }
-        .player:nth-child(4) { bottom: -40px; left: 50%; transform: translateX(-50%); }
-        .player:nth-child(5) { top: 20%; left: -40px; }
+#cihazi-dondur-mesaji p {
+    margin: 10px 0;
+    line-height: 1.4;
+}
 
-        @media (max-width: 768px) {
-            .game-area {
-                flex-direction: column;
-            }
-            
-            .table-area {
-                order: 2;
-            }
-            
-            .control-panel {
-                order: 1;
-            }
-            
-            .player {
-                width: 60px;
-                height: 60px;
-                font-size: 0.7rem;
-            }
-            
-            .player-name {
-                font-size: 0.6rem;
-            }
-            
-            .table-center {
-                padding: 15px;
-                min-width: 150px;
-            }
-        }
+/* Oyun Bitti Overlay'i */
+.game-over-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    display: none;
+}
 
-        .hidden {
-            display: none;
-        }
+.game-over-content {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
 
-        .thinking {
-            animation: thinking-pulse 1.5s infinite;
-        }
+.game-over-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
-        @keyframes thinking-pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
+.game-over-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Oyuncu Pozisyonları */
+.player:nth-child(1) { top: -35px; left: 50%; transform: translateX(-50%); }
+.player:nth-child(2) { top: 20%; right: -35px; }
+.player:nth-child(3) { bottom: 20%; right: -35px; }
+.player:nth-child(4) { bottom: -35px; left: 50%; transform: translateX(-50%); }
+.player:nth-child(5) { top: 20%; left: -35px; }
+
+/* Parlayan Daire Efekti */
+.winner-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 4px solid gold;
+    box-shadow: 0 0 20px gold;
+    animation: ring-pulse 1.5s ease-in-out;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes ring-pulse {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+@media (max-width: 600px) {
+    #cihazi-dondur-mesaji { font-size: 1.4em; }
+    .header h1 { font-size: 1.5rem; }
+    .player { width: 55px; height: 55px; font-size: 0.7rem; }
+    .player-name { font-size: 0.6rem; }
+    .table-center { padding: 10px; min-width: 150px; }
+    .table-guess-input { width: 70px; font-size: 0.9rem; }
+    .table-submit-btn { padding: 6px 12px; font-size: 0.8rem; }
+    .rules-box { width: 250px; }
+}
