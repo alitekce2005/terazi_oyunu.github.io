@@ -1,64 +1,68 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="image/zekapp.jpeg" type="image/png">
-    <title>🧠 Terazi Oyunu </title>
-    <link rel="stylesheet" href="style.css">
+    <title>🧠 Terazi Oyunu</title>
+    <link rel="stylesheet" href="qwen.css">
 </head>
-
 <body>
+    
+    <!-- Kurallar Butonu -->
+    <button class="rules-toggle-btn" id="rulesToggleBtn">?</button>
+
+    <!-- Kurallar Kutusu -->
+    <div class="rules-box" id="floatingRulesBox" style="display: none;">
+        <div class="rules-title">📋 Tüm Kurallar</div>
+        <div id="dynamicRulesList">
+            <div class="rule-item active">🎯 TEMEL: 0-100 arası sayı seç, ortalama x0.8'e en yakın olan kazanır!</div>
+            <div class="rule-item inactive" id="rule-1">🔴 KURAL 1: Aynı sayıyı seçenler -1 puan kaybeder!</div>
+            <div class="rule-item inactive" id="rule-2">🔴 KURAL 2: Tam doğru tahmin, diğerlerinin -2 puan kaybetmesine neden olur!</div>
+            <div class="rule-item inactive" id="rule-3">🔴 KURAL 3: Biri 0 seçerse, diğeri 100 seçerek kazanabilir!</div>
+        </div>
+    </div>
+
+    <!-- Ana Oyun Konteynerı -->
     <div class="game-container">
         <div class="header">
             <h1>🧠 Zeka Tahmin Oyunu vs Botlar 🤖</h1>
             <p>Sen vs 4 Öngörülemez Bot! Ortalama x0.8'e en yakın olan kazanır!</p>
         </div>
 
-        <div class="game-area">
-            <div class="table-area">
-                <div class="game-table" id="gameTable">
-                    <div class="table-center">
-                        <div class="round-info" id="roundInfo">Round 1</div>
-                        <div class="target-info" id="targetInfo">Tahminlerinizi yapın...</div>
+        <!-- Üst: Masa -->
+        <div class="table-area">
+            <div class="game-table" id="gameTable">
+                <div class="table-center">
+                    <div class="round-info" id="roundInfo">Round 1</div>
+                    <div class="target-info" id="targetInfo">Tahminlerinizi yapın...</div>
+                    <div class="guess-input-area" id="guessInputArea">
+                        <input type="number" class="table-guess-input" id="tableGuessInput" min="0" max="100" placeholder="0-100">
+                        <button class="table-submit-btn" id="tableSubmitBtn" onclick="submitTableGuess()">Gönder</button>
                     </div>
                 </div>
             </div>
+        </div>
 
+        <!-- Orta: Oyun Geçmişi -->
+        <div class="game-area">
             <div class="control-panel">
-                <div class="rules-box">
-                    <div class="rules-title">📋 Aktif Kurallar</div>
-                    <div id="rulesList">
-                        <div class="rule-item">🎯 TEMEL: 0-100 arası sayı seç, ortalama x0.8'e en yakın olan kazanır!</div>
-                    </div>
-                </div>
-
-                <div class="input-section" id="inputSection">
-                    <div class="input-label">💭 Senin Tahminin (0-100):</div>
-                    <input type="number" class="guess-input" id="guessInput" min="0" max="100" placeholder="Tahmininizi girin">
-                    <br>
-                    <button class="submit-btn" id="submitBtn" onclick="submitGuess()">Tahmin Et!</button>
-                </div>
-
                 <div class="game-log">
                     <div class="log-title">📜 Oyun Geçmişi</div>
                     <div id="gameLog"></div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Menu Overlay -->
-    <div class="menu-overlay" id="menuOverlay">
-        <div class="menu-content">
-            <h2>🎮 Oyun Menüsü</h2>
-            <p id="menuMessage">Hoş geldiniz!</p>
-            <button class="menu-button" onclick="startNewGame()">🚀 Yeni Oyun Başlat</button>
-            <button class="menu-button" onclick="continueGame()" id="continueBtn" style="display:none;">▶️ Devam Et</button>
-            <button class="menu-button" onclick="showRules()">📖 Kuralları Görüntüle</button>
+        <!-- Oyun Bitti Overlay'i -->
+        <div class="game-over-overlay" id="gameOverOverlay">
+            <div class="game-over-content">
+                <h2 id="gameOverMessage">Oyun Bitti!</h2>
+                <button class="game-over-button" onclick="startNewGame()">🔄 Tekrar Oyna</button>
+            </div>
         </div>
     </div>
-    </body>
-<script src="main.js"></script>
+
+    <script src="qwen.js"></script>
+</body>
 </html>
